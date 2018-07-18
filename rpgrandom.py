@@ -15,7 +15,6 @@ except Exception:
 
 contextSettings = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=contextSettings)
-#@click.option('--count', '-c', help='Number of items to generate', type=int, metavar='<count>', default=1, show_default=True)
 @click.version_option(version='0.1', prog_name='RPG Random Generator')
 def cli():
         pass
@@ -60,16 +59,3 @@ def event(eventScope, eventType):
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
                 click.echo(f"{Fore.RED}{Style.BRIGHT}Bad YAML file!{Style.RESET_ALL}")
-
-#@cli.command()
-def survivor():
-        """Roll a survivor. This will not roll any NPC details."""
-        print("a survivor")
-
-@cli.command()
-@click.option('--male', '-m', 'npcSex', help='Roll a male NPC', is_flag=True)
-@click.option('--female', '-f', 'npcSex', help='Roll a female NPC', is_flag=True)
-@click.option('--type', '-t', 'npcType', help='Specify a type of NPC to roll', default='random', type=click.Choice(lists['npcs']+['random']), show_default=True)
-def npc(npcSex):
-        """Roll an NPC. This will generate a person, but no stats. The gender only affects the name list used. If no gender is supplied, then both namelists are used."""
-        print("an NPC (details coming soon!)")
