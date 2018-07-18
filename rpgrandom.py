@@ -6,8 +6,12 @@ import click
 import colorama
 from colorama import Fore, Back, Style
 
-stream=open(os.path.join(os.path.dirname(__file__), 'tables.yml'))
-lists=yaml.load(stream)
+try:
+    stream=open(os.path.join(os.path.dirname(__file__), 'tables.yml'))
+    lists=yaml.load(stream)
+except Exception:
+    click.echo(f"{Fore.RED}{Style.BRIGHT}Unable to find tables.yml!{Style.RESET_ALL}")
+    exit()
 
 contextSettings = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=contextSettings)
@@ -45,7 +49,7 @@ def event(eventScope, eventType):
                                 subchoice = random.randint(0, len(lists[x])-1)
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
-                pass
+                click.echo(f"{Fore.RED}{Style.BRIGHT}Bad YAML file!{Style.RESET_ALL}")
 
         try:
                 if type(lists[eventType][choice]['optional']) is list:
@@ -55,7 +59,7 @@ def event(eventScope, eventType):
                                 subchoice = random.randint(0, len(lists[x])-1)
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
-                pass
+                click.echo(f"{Fore.RED}{Style.BRIGHT}Bad YAML file!{Style.RESET_ALL}")
 
 #@cli.command()
 def survivor():
