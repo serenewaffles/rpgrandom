@@ -13,6 +13,11 @@ except Exception:
     click.echo(f"{Fore.RED}{Style.BRIGHT}Unable to find tables.yml!{Style.RESET_ALL}")
     exit()
 
+def choose(x):
+    length = len(x)-1
+    choice = random.randint(0, length)
+    return x[choice]
+
 contextSettings = dict(help_option_names=['-h', '--help'])
 @click.group(context_settings=contextSettings)
 @click.version_option(version='0.1', prog_name='RPG Random Generator')
