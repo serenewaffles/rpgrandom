@@ -67,4 +67,4 @@ def event(eventScope, eventType):
                 pass
 
 if __name__ == '__main__':
-    hello()
+    cli()
