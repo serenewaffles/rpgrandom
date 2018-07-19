@@ -65,3 +65,6 @@ def event(eventScope, eventType):
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
                 pass
+
+if __name__ == '__main__':
+    hello()
