@@ -30,37 +30,38 @@ def cli():
 @click.option('--type', '-t', 'eventType', help='Specify a type of event to roll', default='random', type=click.Choice(lists['local events']+lists['global events']+['random']), show_default=True)
 def event(eventScope, eventType):
         """Roll an event. This will roll the event and all necessary components (i.e. if you roll an accident type event, an accident will be rolled for you)."""
+        
+        occurence = {'eventScope' : eventScope.lower(), 'eventType' : eventType.lower()}
+        
         if eventType is 'random':
                 table = eventScope + ' events'
-                length = len(lists[table])-1
-                choice = random.randint(0, length)
+                occurence['eventType'] = choose(lists[table]).lower()
                 click.echo(f"Rolling a {Fore.MAGENTA}{Style.BRIGHT}{eventScope.title()} Event{Style.RESET_ALL}")
-                eventType = lists[table][choice].lower()
-                click.echo(f"Your event is a(n) {Fore.GREEN}{eventType.title()}{Fore.RESET}")
+                click.echo(f"Your event is a(n) {Fore.GREEN}{occurence['eventType'].title()}{Fore.RESET}")
         else:
                 pass
         
-        length = len(lists[eventType])-1
-        choice = random.randint(0, length)
-        click.echo(f"{Fore.GREEN}{lists[eventType][choice]['title']}{Fore.RESET}")
-        click.echo(f"{lists[eventType][choice]['description']}")
+        occurence['number'] = random.randint(0, len(lists[occurence['eventType']])-1)
+        occurence['title'] = lists[occurence['eventType']][occurence['number']]['title']
+        click.echo(f"{Fore.GREEN}{occurence['title']}{Fore.RESET}")
+        click.echo(f"{lists[occurence['eventType']][occurence['number']]['description']}")
 
         try:
-                if type(lists[eventType][choice]['needed']) is list:
+                if type(lists[occurence['eventType']][occurence['number']]['needed']) is list:
                         click.echo(f"{Fore.BLUE}{Style.BRIGHT}This will require:{Style.RESET_ALL}")
-                        for x in lists[eventType][choice]['needed']:
+                        for x in lists[occurence['eventType']][occurence['number']]['needed']:
                                 click.echo(f"{Fore.MAGENTA}{Style.BRIGHT}A(n) {x}{Style.RESET_ALL}")
                                 subchoice = random.randint(0, len(lists[x])-1)
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
-                click.echo(f"{Fore.RED}{Style.BRIGHT}Bad YAML file!{Style.RESET_ALL}")
+                pass
 
         try:
-                if type(lists[eventType][choice]['optional']) is list:
+                if type(lists[eventType][occurence['number']]['optional']) is list:
                         click.echo(f"{Fore.BLUE}{Style.BRIGHT}You may wish to have:{Style.RESET_ALL}")
-                        for x in lists[eventType][choice]['optional']:
+                        for x in lists[eventType][occurence['number']]['optional']:
                                 click.echo(f"{Fore.MAGENTA}{Style.BRIGHT}A(n) {x}{Style.RESET_ALL}")
                                 subchoice = random.randint(0, len(lists[x])-1)
                                 click.echo(f"{lists[x][subchoice]}")
         except KeyError:
-                click.echo(f"{Fore.RED}{Style.BRIGHT}Bad YAML file!{Style.RESET_ALL}")
+                pass
